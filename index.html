@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Helsi | Аврахов М.О.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #F2F5F9; color: #2D3139; display: flex; justify-content: center; overflow: hidden; }
+        
+        .helsi-container {
+            max-width: 414px; width: 100%; height: 100vh; height: 100dvh;
+            background-color: #F2F5F9; position: relative; display: flex; flex-direction: column;
+        }
+
+        /* --- HEADER --- */
+        .header { background-color: #ffffff; padding: 50px 20px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E9F0; }
+        .logo { font-size: 24px; font-weight: 800; color: #0056D2; letter-spacing: -1px; }
+
+        #mainScrollable { flex: 1; overflow-y: auto; padding-bottom: 90px; -webkit-overflow-scrolling: touch; }
+
+        /* --- CARDS --- */
+        .user-card { background: #fff; margin: 15px; padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); cursor: pointer; }
+        .avatar-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #0056D2; }
+        .status-badge { display: inline-block; background: #E6F2FF; color: #0056D2; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-top: 5px; }
+        .military-badge { background: #E9F5E9; color: #2E7D32; }
+
+        /* --- GRID --- */
+        .grid-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 15px; }
+        .action-item { background: #fff; padding: 15px; border-radius: 18px; display: flex; flex-direction: column; gap: 10px; cursor: pointer; }
+        .action-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .blue { background: #E6F2FF; color: #0056D2; }
+        .green { background: #E6F9F1; color: #00B368; }
+        .orange { background: #FFF4E6; color: #FF9500; }
+        .purple { background: #F3E8FF; color: #9D50BB; }
+        .cyan { background: #E0F7FA; color: #00838F; }
+
+        /* --- MODALS --- */
+        .modal-full { position: absolute; inset: 0; top: 100%; background: #F2F5F9; z-index: 1000; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; display: flex; flex-direction: column; }
+        .modal-full.active { top: 0; }
+        .nav-header { background: #fff; padding: 50px 20px 15px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #E5E9F0; position: sticky; top: 0; z-index: 10; }
+        .back-btn { font-size: 16px; color: #0056D2; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+
+        /* --- CONTENT STYLES --- */
+        .info-block { background: #fff; margin: 10px 15px; padding: 15px; border-radius: 15px; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F2F5F9; align-items: flex-start; }
+        .info-row:last-child { border-bottom: none; }
+        .label { color: #6D7784; font-size: 13px; flex: 1; }
+        .value { font-weight: 600; font-size: 13px; flex: 1; text-align: right; color: #2D3139; }
+        .med-item { border-left: 4px solid #FF4D4D; margin-bottom: 10px; padding-left: 10px; }
+
+        .btn-order { background: #0056D2; color: white; border: none; padding: 8px 15px; border-radius: 10px; font-weight: 600; font-size: 12px; cursor: pointer; }
+        .btn-close { background: #F2F5F9; color: #2D3139; border: 1px solid #E5E9F0; width: 100%; padding: 15px; border-radius: 15px; font-weight: 700; margin-top: 20px; cursor: pointer; }
+
+        /* --- BOTTOM NAV --- */
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0 25px; border-top: 1px solid #E5E9F0; z-index: 500; }
+        .nav-link { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #A0A9B6; cursor: pointer; }
+        .nav-link.active { color: #0056D2; }
+    </style>
+</head>
+<body>
+
+<div class="helsi-container">
+    
+    <div class="header">
+        <div class="logo">helsi</div>
+        <div style="font-size: 20px; color: #6D7784;"><i class="far fa-bell"></i></div>
+    </div>
+
+    <div id="mainScrollable">
+        <div class="user-card" onclick="openModal('profile')">
+            <img src="https://i.postimg.cc/C5Gh84zn/IMG-3640-Original.jpg" class="avatar-img" alt="Фото Аврахова">
+            <div class="user-info">
+                <h2 style="font-size: 17px;">Аврахов М.О.</h2>
+                <div class="status-badge military-badge">Військовослужбовець</div>
+                <div class="status-badge">Декларація активна</div>
+            </div>
+            <i class="fas fa-chevron-right" style="margin-left: auto; color: #A0A9B6;"></i>
+        </div>
+
+        <div class="grid-actions">
+            <div class="action-item" onclick="openModal('military')">
+                <div class="action-icon blue"><i class="fas fa-shield-halved"></i></div>
+                <span style="font-weight: 600; font-size: 13px;">Військовий квиток</span>
+            </div>
+            <div class="action-item" onclick="openModal('medcard')">
+                <div class="action-icon green"><i class="fas fa-notes-medical"></i></div>
+                <span style="font-weight: 600; font-size: 13px;">Медкарта (Діагнози)</span>
+            </div>
+            <div class="action-item" onclick="openModal('orderDoc')">
+                <div class="action-icon cyan"><i class="fas fa-file-invoice"></i></div>
+                <span style="font-weight: 600; font-size: 13px;">Замовити довідку</span>
+            </div>
+            <div class="action-item" onclick="openModal('chat')">
+                <div class="action-icon purple"><i class="fas fa-headset"></i></div>
+                <span style="font-weight: 600; font-size: 13px;">Підтримка</span>
+            </div>
+        </div>
+
+        <div style="padding: 20px 15px 10px; font-weight: 700; font-size: 15px;">Останні записи</div>
+        <div class="info-block" style="border-left: 4px solid #00B368;">
+            <div style="font-size: 13px; color: #6D7784;">14.05.2024 • ТМО МВС ПОЛТАВА</div>
+            <div style="font-weight: 600; margin-top: 3px;">Огляд терапевта: Бронхіт</div>
+        </div>
+    </div>
+
+    <div id="modalOrderDoc" class="modal-full">
+        <div class="nav-header" onclick="closeAll()"><span class="back-btn"><i class="fas fa-chevron-left"></i> Назад</span></div>
+        <div class="info-block">
+            <p style="font-size: 14px; line-height: 1.5; margin-bottom: 15px;">
+                <b>Максим Олександрович</b>, на даний момент для Вас доступно кілька довідок:
+            </p>
+            <div class="info-row">
+                <span class="label">1) Форма 080/о</span>
+                <button class="btn-order" onclick="openModal('payDoc')">Замовити</button>
+            </div>
+            <div class="info-row">
+                <span class="label">2) Форма 10/і</span>
+                <button class="btn-order" onclick="openModal('payDoc')">Замовити</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalPayDoc" class="modal-full">
+        <div class="nav-header" onclick="closeAll()"><span class="back-btn"><i class="fas fa-chevron-left"></i> Назад</span></div>
+        <div class="info-block" style="border-top: 5px solid #0056D2;">
+            <h4 style="color: #FF4D4D; margin-bottom: 15px;">ПОВІДОМЛЯЄМО:</h4>
+            <p style="font-size: 14px; line-height: 1.6; color: #2D3139;">
+                Дана довідка є платною державною послугою для військовослужбовців, резервістів, списаних у запас, призовників. <br><br>
+                Для замовлення даної довідки сплатіть до державного казначейства України її вартість: <b>1 875 грн. 70 коп.</b> <br><br>
+                В призначені оплати <b>ОБОВʼЯЗКОВО</b> вкажіть наступне : <br>
+                <span style="display: block; background: #F2F5F9; padding: 10px; border-radius: 10px; margin-top: 10px; font-weight: 700; border: 1px dashed #0056D2;">
+                    Сплата за номером №20371659/30185200217
+                </span>
+            </p>
+            <button class="btn-close" onclick="closeAll()">Закрити</button>
+        </div>
+    </div>
+
+    <div id="modalProfile" class="modal-full">
+        <div class="nav-header" onclick="closeAll()"><span class="back-btn"><i class="fas fa-chevron-left"></i> Назад</span></div>
+        <div class="info-block">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <img src="https://i.postimg.cc/C5Gh84zn/IMG-3640-Original.jpg" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #0056D2;">
+                <h3>Аврахов Максим Олександрович</h3>
+            </div>
+            <div class="info-row"><span class="label">Паспорт</span><span class="value">EP 119988</span></div>
+            <div class="info-row"><span class="label">РНОКПП</span><span class="value">3185200217</span></div>
+            <div class="info-row"><span class="label">Емейл</span><span class="value">avrakhovmaksym@gmail.com</span></div>
+            <div class="info-row"><span class="label">Телефон</span><span class="value">+380 97 309 96 18</span></div>
+            <div class="info-row"><span class="label">Адреса</span><span class="value">м. Жовті Води, вул. Кропоткіна 7, кв. 79</span></div>
+        </div>
+    </div>
+
+    <div id="modalMilitary" class="modal-full">
+        <div class="nav-header" onclick="closeAll()"><span class="back-btn"><i class="fas fa-chevron-left"></i> Назад</span></div>
+        <div class="info-block" style="background: #f9fff9; border: 1px solid #d0e8d0;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #d0e8d0; padding-bottom: 10px;">
+                <img src="https://i.postimg.cc/C5Gh84zn/IMG-3640-Original.jpg" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
+                <div style="font-weight: 800; color: #2E7D32;">ВІЙСЬКОВИЙ ОБЛІК</div>
+            </div>
+            <div class="info-row"><span class="label">Звання</span><span class="value">СОЛДАТ</span></div>
+            <div class="info-row"><span class="label">ВОС</span><span class="value">Г-131264</span></div>
+            <div class="info-row"><span class="label">Квиток</span><span class="value">АГ 042020</span></div>
+            <div class="info-row"><span class="label">Група крові</span><span class="value" style="color: #FF4D4D;">O(I) Rh+</span></div>
+            <div class="info-row"><span class="label">Місце служби</span><span class="value">в/ч 3052 НГУ</span></div>
+            <div class="info-row"><span class="label">Посада</span><span class="value" style="font-size: 11px;">Електрозварник 1-ї майстерні ремонту арт. озброєння</span></div>
+        </div>
+    </div>
+
+    <div id="modalMedcard" class="modal-full">
+        <div class="nav-header" onclick="closeAll()"><span class="back-btn"><i class="fas fa-chevron-left"></i> Назад</span></div>
+        <div style="padding: 10px 15px; font-weight: 700;">ІСТОРІЯ ДІАГНОЗІВ</div>
+        <div class="info-block med-item">
+            <div style="font-size: 11px; color: #6D7784;">14.05.2024 • ТМО МВС ПОЛТАВА</div>
+            <div style="font-weight: 700;">J20.9 БРОНХІТ. H90.3 ПРИГЛУХУВАТІСТЬ</div>
+        </div>
+        <div class="info-block med-item">
+            <div style="font-size: 11px; color: #6D7784;">22.09.2023 • ПОКЛ ПОЛТАВА</div>
+            <div style="font-weight: 700;">G40.2 СИМПТОМАТИЧНА ЕПІЛЕПСІЯ (ФОКАЛЬНА)</div>
+        </div>
+        <div class="info-block med-item" style="border-left-color: #0056D2;">
+            <div style="font-size: 11px; color: #6D7784;">23.01.2023 • МКЛ №8 ДНІПРО</div>
+            <div style="font-weight: 700;">S06.00 СТРУС ГОЛОВНОГО МОЗКУ (ГОСТРИЙ ПЕРІОД)</div>
+        </div>
+        <div class="info-block med-item" style="border-left-color: #0056D2;">
+            <div style="font-size: 11px; color: #6D7784;">14.01.2023 • МКЛ №16 ДНІПРО</div>
+            <div style="font-weight: 700;">ЗЧМТ. СТРУС ГМ. АКУБАРОТРАВМА</div>
+        </div>
+    </div>
+
+    <div id="modalSearch" class="modal-full">
+        <div class="nav-header" onclick="closeAll()"><span class="back-btn"><i class="fas fa-chevron-left"></i> ПОВЕРНУТИСЬ НАЗАД</span></div>
+        <div style="padding: 20px;">
+            <div style="background: #fff; border-radius: 15px; padding: 15px; display: flex; align-items: center; gap: 10px; border: 1px solid #E5E9F0;">
+                <i class="fas fa-search" style="color: #A0A9B6;"></i>
+                <input type="text" placeholder="Прізвище лікаря або спеціалізація" style="border: none; outline: none; width: 100%; font-size: 14px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="modalChat" class="modal-full">
+        <div class="nav-header" onclick="closeAll()"><span class="back-btn"><i class="fas fa-chevron-left"></i> ПОВЕРНУТИСЬ НАЗАД</span></div>
+        <div style="padding: 15px;">
+            <div style="background: #fff; border-radius: 15px; padding: 15px; margin-bottom: 10px; border: 1px solid #E5E9F0;">
+                Вітаємо, Максиме Олександровичу! Оператор служби підтримки Helsi скоро приєднається.
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-link active" onclick="closeAll()"><i class="fas fa-home"></i><span>Головна</span></div>
+        <div class="nav-link" onclick="openModal('search')"><i class="fas fa-search"></i><span>Пошук</span></div>
+        <div class="nav-link" onclick="openModal('chat')"><i class="fas fa-comment-dots"></i><span>Чат</span></div>
+        <div class="nav-link" onclick="openModal('profile')"><i class="fas fa-user-circle"></i><span>Кабінет</span></div>
+    </div>
+</div>
+
+<script>
+    function openModal(id) {
+        const modalId = 'modal' + id.charAt(0).toUpperCase() + id.slice(1);
+        const modal = document.getElementById(modalId);
+        if(modal) modal.classList.add('active');
+    }
+
+    function closeAll() {
+        document.querySelectorAll('.modal-full').forEach(m => m.classList.remove('active'));
+    }
+</script>
+
+</body>
+</html>
